@@ -34,6 +34,8 @@ class CaptchaLog(models.Model):
     image = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, null=False)
+    train1 = models.CharField(max_length=10, default=None)
+    train2 = models.CharField(max_length=10, default=None)
 
     def __str__(self):
         return str(self.partner_id) + ':' + str(self.decode_value) + ':' + str(self.status)
