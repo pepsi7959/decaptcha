@@ -174,7 +174,7 @@ def load_data(path, IMAGE_H, IMAGE_W, LABEL_LENGTH, LABELS):
             if name.endswith(".jpg") or name.endswith(".jpeg") or name.endswith(".png"):
                 split_images = read_image(os.path.join(path, name), IMAGE_H, IMAGE_W, LABEL_LENGTH)
 
-                if len(split_images) != 6:
+                if len(split_images) != LABEL_LENGTH:
                     print("fail to split image :" + os.path.join(path, name))
                     continue
 
