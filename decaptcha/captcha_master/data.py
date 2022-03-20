@@ -20,7 +20,7 @@ def read_image(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH):
 
     _, thresh = cv2.threshold(dilate, 125, 255, cv2.THRESH_BINARY_INV)
 
-    blur = cv2.GaussianBlur(dilate, (3, 3), 1)
+    blur = cv2.GaussianBlur(thresh, (3, 3), 1)
     t_lower = 10  # Lower Threshold
     t_upper = 400  # Upper threshold
     aperture_size = 3  # Aperture size
@@ -89,7 +89,7 @@ def decode_image(base64data, IMAGE_H, IMAGE_W, LABEL_LENGTH):
 
     _, thresh = cv2.threshold(dilate, 125, 255, cv2.THRESH_BINARY_INV)
 
-    blur = cv2.GaussianBlur(dilate, (3, 3), 1)
+    blur = cv2.GaussianBlur(thresh, (3, 3), 1)
     t_lower = 10  # Lower Threshold
     t_upper = 400  # Upper threshold
     aperture_size = 3  # Aperture size
