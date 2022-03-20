@@ -33,6 +33,9 @@ def read_image(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH):
     x_max = 0
     images = []
 
+    image = image.astype(np.float32)
+    image = image / 255
+
     for contour in contours:
         # get rectangle bounding contour
         [x, y, w, h] = cv2.boundingRect(contour)
@@ -101,6 +104,9 @@ def decode_image(base64data, IMAGE_H, IMAGE_W, LABEL_LENGTH):
     x_min = 0
     x_max = 0
     images = []
+
+    image = image.astype(np.float32)
+    image = image / 255
 
     for contour in contours:
         # get rectangle bounding contour

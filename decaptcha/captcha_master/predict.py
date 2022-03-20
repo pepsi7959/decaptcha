@@ -52,7 +52,7 @@ def main(argv):
     files = os.listdir(image_dir)
 
     for i in range(5):
-        filename = os.path.join(image_dir, files[random.randint(0, len(files))])
+        filename = os.path.join(image_dir, files[random.randint(0, len(files) - 1)])
         label = predict(filename)
         print(filename, label)
 
