@@ -1,0 +1,68 @@
+{% extends "layouts/base_empty.html" %}
+
+{% block title %} Form Elements {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+    <style>
+    form input[type="text"]{
+
+    }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}	
+
+    <!-- [ Main Content ] start -->
+        <div class="pcoded-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Trainer Number {{ trainer_number }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- [ breadcrumb ] end -->
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <!-- [ form-element ] start -->
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Image Trainer ({{ filled_count }})</h5>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="data:image/png;base64,{{ img_value }}" width="300">
+                                </div>
+                                <div class="col-md-3">
+                                    <form method="post">
+                                        <div class="form-group">
+                                            <label for="input1">{{ old_value }}</label>
+                                            <input type="text" class="form-control" id="input1" name="captcha_value" autofocus="autofocus" autocomplete="off" minlength="6" maxlength="6">
+                                        </div>
+                                        <input type="hidden" name="image_id" value="{{ img_id }}" >
+                                        <button type="submit" class="btn  btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Input group -->
+                </div>
+                <!-- [ form-element ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+
+        </div>
+    <!-- [ Main Content ] end -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

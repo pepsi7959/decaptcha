@@ -5,10 +5,11 @@ import cv2
 import numpy as np
 import pandas as pd
 import tqdm
+import base64
 from sklearn import model_selection
 
 
-def read_image_v2(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH):
+def read_image(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH):
     image = cv2.imread(filename)
 
     img_h, img_w = image.shape[:2]
@@ -32,7 +33,6 @@ def read_image_v2(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH):
     x_max = 0
     images = []
 
-    # fig,axes = plt.subplots(nrows = 1, ncols = 6, figsize=(28,28))
     for contour in contours:
         # get rectangle bounding contour
         [x, y, w, h] = cv2.boundingRect(contour)
@@ -52,11 +52,6 @@ def read_image_v2(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH):
         if x_max < x:
             x_max = x
 
-        # y_offset = 8
-        # y_start = y - y_offset
-        # if y_start <= 0:
-        #     y_start = y
-        # y_end = y + h + y_offset
         y_start = 0
         y_end = img_h
         x_start = x
@@ -72,39 +67,83 @@ def read_image_v2(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH):
             continue
         cur_x = img[0]
         img = img[1]
-        img = cv2.resize(img, (28, 28), interpolation=cv2.INTER_AREA)
+        img = cv2.resize(img, (IMAGE_H, IMAGE_W), interpolation=cv2.INTER_AREA)
         sorted_images.append(img)
         i = i + 1
 
-        if i == 6:
+        if i == LABEL_LENGTH:
             break
 
     return sorted_images
 
 
-def read_image(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH):
-    image = cv2.imread(filename)  # การอ่าน PNG จะอ่านได้เพียง 3 ช่องเท่านั้น
-    # image = mpimg.imread(filename)
-    h, w = image.shape[:2]
-    image = image[0:h, 12:w - 6]
-    image = cv2.resize(image, (IMAGE_W * LABEL_LENGTH, IMAGE_H), cv2.INTER_LINEAR)  # zoom size
+def decode_image(base64data, IMAGE_H, IMAGE_W, LABEL_LENGTH):
+    nparr = np.fromstring(base64.b64decode(str(base64data)), np.uint8)
+    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-    # Convert from [0, 255] -> [0.0, 1.0].
-    image = image.astype(np.float32)
-    image = image / 255.0
+    img_h, img_w = image.shape[:2]
+    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
 
-    return image
+    kernel = np.ones((2, 2), np.uint8)
+    dilate = cv2.dilate(gray, kernel, iterations=1)
 
+    _, thresh = cv2.threshold(dilate, 125, 255, cv2.THRESH_BINARY_INV)
 
-def split_image(image, IMAGE_H, IMAGE_W, LABEL_LENGTH):
+    blur = cv2.GaussianBlur(dilate, (3, 3), 1)
+    t_lower = 10  # Lower Threshold
+    t_upper = 400  # Upper threshold
+    aperture_size = 3  # Aperture size
+    l2gradient = True  # Boolean
+
+    canny_output = cv2.Canny(blur, t_lower, t_upper, apertureSize=aperture_size, L2gradient=l2gradient)
+    contours, hierarchy = cv2.findContours(canny_output, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
+    x_min = 0
+    x_max = 0
     images = []
-    h = image.shape[0]
-    sw = IMAGE_W
-    for i in range(LABEL_LENGTH):
-        x = sw * i
-        images.append(image[0:h, x:x + sw])
 
-    return images
+    for contour in contours:
+        # get rectangle bounding contour
+        [x, y, w, h] = cv2.boundingRect(contour)
+
+        if not (w > 20 or h > 20):
+            continue
+
+        if x_min == 0:
+            x_min = x
+
+        if x > x_min:
+            x_min = x
+
+        if x_max == 0:
+            x_max = x
+
+        if x_max < x:
+            x_max = x
+
+        y_start = 0
+        y_end = img_h
+        x_start = x
+        x_end = x + w
+        images.append((x, image[y_start:y_end, x_start:x_end]))
+
+    i = 0
+    cur_x = 0
+    images.sort(key=lambda x: x[0])
+    sorted_images = []
+    for img in images:
+        if (img[0] - cur_x) < 10:
+            continue
+        cur_x = img[0]
+        img = img[1]
+        img = cv2.resize(img, (IMAGE_H, IMAGE_W), interpolation=cv2.INTER_AREA)
+        sorted_images.append(img)
+        i = i + 1
+
+        if i == LABEL_LENGTH:
+            break
+
+    return sorted_images
 
 
 # 验证码去燥
@@ -127,9 +166,7 @@ def load_data(path, IMAGE_H, IMAGE_W, LABEL_LENGTH, LABELS):
         for i, name in enumerate(fnames):
             print("load file: " + name)
             if name.endswith(".jpg") or name.endswith(".jpeg") or name.endswith(".png"):
-                # image = read_image(os.path.join(path, name), IMAGE_H, IMAGE_W, LABEL_LENGTH)
-                # simgs = split_image(image, IMAGE_H, IMAGE_W, LABEL_LENGTH)
-                split_images = read_image_v2(os.path.join(path, name), IMAGE_H, IMAGE_W, LABEL_LENGTH)
+                split_images = read_image(os.path.join(path, name), IMAGE_H, IMAGE_W, LABEL_LENGTH)
 
                 if len(split_images) != 6:
                     print("fail to split image :" + os.path.join(path, name))

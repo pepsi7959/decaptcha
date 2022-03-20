@@ -11,8 +11,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from django.db import connection
+from django.views.decorators.csrf import csrf_exempt
 
-from decaptcha.models import CaptchaUsage
+from decaptcha.models import CaptchaUsage, CaptchaLog
 
 
 @login_required(login_url="/login/")
@@ -108,3 +109,59 @@ def summary_month(request):
     except:
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render({'error_msg': ''}, request))
+
+
+@csrf_exempt
+def trainer1(request):
+    filled_count = 0
+    if request.method == "POST":
+        image_id = request.POST.get('image_id', '')
+        captcha_value = request.POST.get('captcha_value', '')
+        if image_id and captcha_value:
+            try:
+                image_id = int(image_id)
+                CaptchaLog.objects.filter(id=image_id).update(train1=captcha_value)
+            except:
+                print("Waring: image {} not found, or update error".format(image_id))
+
+    try:
+        log = CaptchaLog.objects.filter(status=3, train1=None).order_by('id').first()
+        try:
+            filled_count = CaptchaLog.objects.filter(status=3, train1__isnull=False).count()
+        except:
+            pass
+        if not log:
+            return HttpResponse("Not Found")
+
+        html_template = loader.get_template('home/trainer.html')
+        return HttpResponse(html_template.render({'trainer_number': 1, 'img_value': log.image, 'old_value': log.decode_value, 'img_id': log.id, "filled_count": filled_count}, request))
+    except:
+        return HttpResponse("Not Found")
+
+
+@csrf_exempt
+def trainer2(request):
+    filled_count = 0
+    if request.method == "POST":
+        image_id = request.POST.get('image_id', '')
+        captcha_value = request.POST.get('captcha_value', '')
+        if image_id and captcha_value:
+            try:
+                image_id = int(image_id)
+                CaptchaLog.objects.filter(id=image_id).update(train2=captcha_value)
+            except:
+                print("Waring: image {} not found, or update error".format(image_id))
+
+    try:
+        log = CaptchaLog.objects.filter(status=3, train2=None).order_by('id').first()
+        try:
+            filled_count = CaptchaLog.objects.filter(status=3, train2__isnull=False).count()
+        except:
+            pass
+        if not log:
+            return HttpResponse("Not Found")
+
+        html_template = loader.get_template('home/trainer.html')
+        return HttpResponse(html_template.render({'trainer_number': 2, 'img_value': log.image, 'old_value': log.decode_value, 'img_id': log.id, "filled_count": filled_count}, request))
+    except:
+        return HttpResponse("Not Found")

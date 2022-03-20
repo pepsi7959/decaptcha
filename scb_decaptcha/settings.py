@@ -29,7 +29,7 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'scbdecaptchahttp.proxy']
 
 
 # Application definition
@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'scb_decaptcha.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'NAME': 'ktbdecaptcha',
-        'USER': 'root',
-        'PASSWORD': 'password',
+        'HOST': '35.240.137.89',
+        'NAME': 'scbdecaptcha',
+        'USER': 'scbdecaptcha',
+        'PASSWORD': '1Q2w3e4r5t',
         'TIME_ZONE': 'Asia/Bangkok',
     }
 }
@@ -142,9 +142,9 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LABEL_LENGTH = 6
-LABELS = "234578cdefghkmnprwxy"
-IMAGE_H = 25
-IMAGE_W = 25
+LABELS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ"
+IMAGE_H = 28
+IMAGE_W = 28
 IMAGE_C = 3
 
 TF_MODEL = resnet.load(IMAGE_H, IMAGE_W, IMAGE_C, LABELS, os.path.join(BASE_DIR, 'decaptcha/captcha_master/model/model.tfl'))

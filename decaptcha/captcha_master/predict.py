@@ -40,8 +40,7 @@ def main(argv):
     # predict
     def predict(filename):
         image = data.read_image(filename, IMAGE_H, IMAGE_W, LABEL_LENGTH)
-        x_data = data.split_image(image, IMAGE_H, IMAGE_W, LABEL_LENGTH)
-        y_preds = model.predict(x_data)
+        y_preds = model.predict(image)
 
         label = ''
         for y_pred in y_preds:

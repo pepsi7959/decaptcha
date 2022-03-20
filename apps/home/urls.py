@@ -12,6 +12,8 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('summary_day', views.summary_day, name='summary_day'),
     path('summary_month', views.summary_month, name='summary_month'),
+    path('trainer1', views.trainer1, name='trainer1'),
+    path('trainer2', views.trainer2, name='trainer2'),
 
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
