@@ -1,9 +1,9 @@
 deploy:
-	scp -r src root@178.128.105.101:/root/github.com/decaptcha/
+	scp -r decaptcha root@178.128.105.101:/root/github.com/decaptcha/decaptcha
 	scp Makefile root@178.128.105.101:/root/github.com/decaptcha/
 
 train:
-	python3	src/train.py -i ../data_sets/ -m src/
+	python3	decaptcha/decaptcha/captcha_master/train.py -i ../data_sets/ -m decaptcha/decaptcha/captcha_master/
 
 test:
-	python3 src/predict.py -i ../data_sets/ -m src/
+	python3 decaptcha/decaptcha/captcha_master/predict.py -i ../data_sets/ -m decaptcha/decaptcha/captcha_master/
