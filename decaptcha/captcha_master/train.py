@@ -40,7 +40,7 @@ def main(argv):
     model = resnet.build(IMAGE_H, IMAGE_W, IMAGE_C, LABELS, model_file, learning_rate=0.01, val_acc_thresh=0.970)
 
     # to train
-    resnet.fit(model, data_sets, model_file, n_epoch=20)
+    resnet.fit(model, data_sets, model_file, n_epoch=50)
 
 
 if __name__ == "__main__":

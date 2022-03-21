@@ -190,7 +190,7 @@ def trainer3(request):
             return HttpResponse("Not Found")
 
         html_template = loader.get_template('home/trainer.html')
-        return HttpResponse(html_template.render({'trainer_number': 3, 'img_value': log.image, 'old_value': log.decode_value, 'img_id': log.id, "filled_count": filled_count}, request))
+        return HttpResponse(html_template.render({'trainer_number': 1, 'img_value': log.image, 'old_value': log.decode_value, 'img_id': log.id, "filled_count": filled_count}, request))
     except Exception as e:
         return HttpResponse("Not Found:"+str(e))
 
@@ -218,6 +218,6 @@ def trainer4(request):
             return HttpResponse("Not Found")
 
         html_template = loader.get_template('home/trainer.html')
-        return HttpResponse(html_template.render({'trainer_number': 4, 'img_value': log.image, 'old_value': log.decode_value, 'img_id': log.id, "filled_count": filled_count}, request))
+        return HttpResponse(html_template.render({'trainer_number': 2, 'img_value': log.image, 'old_value': log.decode_value, 'img_id': log.id, "filled_count": filled_count}, request))
     except Exception as e:
         return HttpResponse("Not Found:"+str(e))
