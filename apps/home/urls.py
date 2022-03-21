@@ -14,6 +14,8 @@ urlpatterns = [
     path('summary_month', views.summary_month, name='summary_month'),
     path('trainer1', views.trainer1, name='trainer1'),
     path('trainer2', views.trainer2, name='trainer2'),
+    path('trainer3', views.trainer3, name='trainer3'),
+    path('trainer4', views.trainer4, name='trainer4'),
 
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
