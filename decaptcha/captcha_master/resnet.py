@@ -26,7 +26,7 @@ def build(IMAGE_H, IMAGE_W, IMAGE_C, LABELS, model_file, learning_rate=0.01, val
     # img_prep.add_featurewise_zero_center(per_channel=True)  # Input image to subtract image mean
 
     img_aug = tflearn.ImageAugmentation()
-    img_aug.add_random_rotation(max_angle=45.0)  # random rotation angle
+    img_aug.add_random_rotation(max_angle=30.0)  # random rotation angle
     # img_aug.add_random_blur(sigma_max=5.0)
 
     # Building Residual Network
