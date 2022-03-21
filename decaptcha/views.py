@@ -275,6 +275,8 @@ def get_train_image(request):
         success_count = 0
 
         for image in images:
+            if str(image.train1).find("l") >= 0:
+                image.train1 = str(image.train1).replace("l", "I")
             img_path = img_dir + '/' + image.train1 + '.png'
             if not path.exists(img_path):
                 try:
