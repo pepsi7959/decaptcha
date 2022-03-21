@@ -173,13 +173,14 @@ def load_data(path, IMAGE_H, IMAGE_W, LABEL_LENGTH, LABELS):
             print("load file: " + name)
             if name.endswith(".jpg") or name.endswith(".jpeg") or name.endswith(".png"):
                 split_images = read_image(os.path.join(path, name), IMAGE_H, IMAGE_W, LABEL_LENGTH)
+                filename = name[:name.find(".")]
 
-                if len(split_images) != LABEL_LENGTH:
+                if len(split_images) != len(filename):
                     print("fail to split image :" + os.path.join(path, name))
                     continue
 
-                label = name[:LABEL_LENGTH]
-                for k in range(LABEL_LENGTH):
+                label = name[:len(filename)]
+                for k in range(len(filename)):
                     labels.append(char_to_vec(label[k]))
                     images.append(remove_noise(split_images[k]))
                     files.append(name)

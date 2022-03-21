@@ -163,5 +163,5 @@ def trainer2(request):
 
         html_template = loader.get_template('home/trainer.html')
         return HttpResponse(html_template.render({'trainer_number': 2, 'img_value': log.image, 'old_value': log.decode_value, 'img_id': log.id, "filled_count": filled_count}, request))
-    except:
+    except Exception as e:
         return HttpResponse("Not Found:"+str(e))

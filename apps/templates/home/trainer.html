@@ -8,6 +8,10 @@
     form input[type="text"]{
 
     }
+    img {
+        -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+        filter: grayscale(100%);
+    }
     </style>
 {% endblock stylesheets %}
 
@@ -44,7 +48,7 @@
                                     <form method="post">
                                         <div class="form-group">
                                             <label for="input1">{{ old_value }}</label>
-                                            <input type="text" class="form-control" id="input1" name="captcha_value" autofocus="autofocus" autocomplete="off" minlength="6" maxlength="6">
+                                            <input type="text" class="form-control" id="input1" name="captcha_value" autofocus="autofocus" autocomplete="off" minlength="5" maxlength="6">
                                         </div>
                                         <input type="hidden" name="image_id" value="{{ img_id }}" >
                                         <button type="submit" class="btn  btn-primary">Submit</button>

@@ -26,7 +26,7 @@ def main(argv):
             model_dir = arg
 
     LABEL_LENGTH = 6
-    LABELS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ"
+    LABELS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     IMAGE_H = 28  # The size of a single character image after scaling, the smaller the training time, the shorter
     IMAGE_W = 28  # The size of a single character image after scaling, the smaller the training time, the shorter

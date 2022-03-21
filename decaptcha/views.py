@@ -89,7 +89,7 @@ def decaptcha(request):
             label = ''
             for y_pred in y_preds:
                 label = label + data.onehot2number(y_pred, settings.LABELS)
-            if len(label) != settings.LABEL_LENGTH:
+            if len(label) > settings.LABEL_LENGTH or len(label) < settings.LABEL_LENGTH - 1:
                 response['message'] = 'ERROR_CAPTCHA_DETECT:DETECT_LENGTH_' + str(len(label))
                 return HttpResponse(json.dumps(response))
         except Exception as e:
